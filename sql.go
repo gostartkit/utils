@@ -243,6 +243,7 @@ func orderByParse(orderBy string) []string {
 	return vals
 }
 
+// MySQLSplit split function for the Scanner
 func MySQLSplit(data []byte, atEOF bool) (advance int, token []byte, err error) {
 
 	inDoubleQuotes := false
