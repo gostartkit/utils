@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"strings"
@@ -240,4 +241,38 @@ func orderByParse(orderBy string) []string {
 	}
 
 	return vals
+}
+
+func MySQLSplit(data []byte, atEOF bool) (advance int, token []byte, err error) {
+
+	inDoubleQuotes := false
+	inSingleQuotes := false
+
+	for i := 0; i < len(data); i++ {
+
+		switch data[i] {
+		case '"':
+			if !inSingleQuotes && i > 0 && data[i-1] != '\\' {
+				inDoubleQuotes = !inDoubleQuotes
+				continue
+			}
+		case '\'':
+			if !inDoubleQuotes && i > 0 && data[i-1] != '\\' {
+				inSingleQuotes = !inSingleQuotes
+				continue
+			}
+		case ';':
+			if inDoubleQuotes || inSingleQuotes {
+				continue
+			}
+
+			return i + 1, data[:i], nil
+		}
+	}
+
+	if !atEOF {
+		return 0, nil, nil
+	}
+
+	return 0, data, bufio.ErrFinalToken
 }
