@@ -238,20 +238,6 @@ func toLowerCase(str *strings.Builder, val *string, m byte) {
 	}
 }
 
-// toUpperCase convert val to upper case
-func toUpperCase(str *strings.Builder, val *string, m byte) {
-
-	for i := 0; i < len(*val); i++ {
-		c := (*val)[i]
-
-		if 'a' <= c && c <= 'z' {
-			c -= m
-		}
-
-		str.WriteByte(c)
-	}
-}
-
 // toPascalCase convert val to pascal case
 func toPascalCase(str *strings.Builder, val *string, m byte) {
 
