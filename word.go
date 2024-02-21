@@ -65,6 +65,17 @@ func MakeSingle(name string) string {
 	return name
 }
 
+// MakeTitle converts the given val to title case
+// like: UserKey,userKey to user_key
+func MakeTitle(val string) string {
+
+	val = fixKey(val)
+
+	return makePascalCase(parseWord(&val), func(s *strings.Builder) {
+		s.WriteByte(' ')
+	})
+}
+
 // MakeSnake converts the given val to snake case
 // like: UserKey,userKey to user_key
 func MakeSnake(val string) string {

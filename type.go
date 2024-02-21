@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -191,4 +192,42 @@ func TryParse(val string, attributeType string) (interface{}, error) {
 	default:
 		return nil, fmt.Errorf("TryParse: attributeType '%s' not supported", attributeType)
 	}
+}
+
+// IsInt when goType is: int  int8  int16  int32  int64 return true
+func IsInt(goType string) bool {
+	// int  int8  int16  int32  int64
+	switch goType {
+	case "int", "int8", "int16", "int32", "int64":
+		return true
+	default:
+		return false
+	}
+}
+
+// Numeric if attribute type is Numeric return true, else false
+func IsNumeric(attributeType string) bool {
+
+	attributeType = strings.TrimPrefix(attributeType, "*")
+
+	switch attributeType {
+	case "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16",
+		"uint32", "uint64", "float32", "float64", "complex64", "complex128":
+		return true
+	}
+
+	return false
+}
+
+// IsBool if attribute type is Numeric return true, else false
+func IsBool(attributeType string) bool {
+
+	attributeType = strings.TrimPrefix(attributeType, "*")
+
+	switch attributeType {
+	case "bool":
+		return true
+	}
+
+	return false
 }
