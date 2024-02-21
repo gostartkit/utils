@@ -277,3 +277,117 @@ func MySQLSplit(data []byte, atEOF bool) (advance int, token []byte, err error) 
 
 	return 0, data, bufio.ErrFinalToken
 }
+
+// Where parse where
+func Where(where string, fn func(key string, op string, val string)) {
+
+	vals := whereParse(where)
+
+	l := len(vals)
+
+	var prev string
+
+	for i := 0; i < l; i++ {
+
+		val := vals[i]
+
+		switch strings.ToLower(val) {
+		case "=", "<>", ">", ">=", "<", "<=":
+			op := val
+			i, val = whereNext(vals, i, l)
+			fn(prev, op, val)
+		case "and", "or", "not":
+			fn(val, "", "")
+		case "(", ")":
+			fn(val, "", "")
+		default:
+			prev = val
+		}
+	}
+}
+
+// whereParse parse filter to vals
+func whereParse(where string) []string {
+
+	l := len(where)
+
+	prev := 0
+	inSingle := false
+	inQuotes := false
+
+	vals := []string{}
+
+	for pos := 0; pos < l; pos++ {
+
+		r := where[pos]
+
+		switch r {
+		case '(', ')':
+
+			if inSingle || inQuotes {
+				continue
+			}
+
+			if pos > prev {
+				vals = append(vals, where[prev:pos])
+			}
+
+			prev = pos + 1
+
+			vals = append(vals, string(r))
+
+		case ' ', '\t':
+
+			if inSingle || inQuotes {
+				continue
+			}
+
+			if pos > prev {
+				vals = append(vals, where[prev:pos])
+			}
+
+			prev = pos + 1
+		case '\'':
+			if inQuotes {
+				continue
+			}
+
+			inSingle = !inSingle
+
+			if pos > prev {
+				vals = append(vals, where[prev:pos])
+			}
+
+			prev = pos + 1
+		case '"':
+			if inSingle {
+				continue
+			}
+
+			inQuotes = !inQuotes
+
+			if pos > prev {
+				vals = append(vals, where[prev:pos])
+			}
+
+			prev = pos + 1
+		}
+	}
+
+	if prev < l {
+		vals = append(vals, where[prev:])
+	}
+
+	return vals
+}
+
+// whereNext read whereNext item
+func whereNext(items []string, i int, l int) (int, string) {
+	pos := i + 1
+
+	if pos < l {
+		return pos, items[pos]
+	}
+
+	return i, ""
+}
