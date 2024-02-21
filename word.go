@@ -21,6 +21,14 @@ var (
 	_suffixKeys = []string{"Id"}
 )
 
+// MakeCapitalize change first character to upper
+func MakeCapitalize(str string) string {
+	if len(str) == 0 {
+		return ""
+	}
+	return strings.ToUpper(str[0:1]) + str[1:]
+}
+
 // MakePlural convert word to plural
 func MakePlural(name string) string {
 
