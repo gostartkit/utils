@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"bufio"
-	"os"
 	"regexp"
 	"strings"
 )
@@ -133,39 +131,6 @@ func MakeUrl(val string) string {
 	return makeLowerCase(parseWord(&val), func(s *strings.Builder) {
 		s.WriteByte('/')
 	})
-}
-
-// ModuleName get ModuleName from  "go.mod"
-func ModuleName() string {
-
-	filename := "go.mod"
-
-	r, err := os.Open(filename)
-
-	if err != nil {
-		return ""
-	}
-
-	defer r.Close()
-
-	scanner := bufio.NewScanner(r)
-
-	scanner.Split(bufio.ScanWords)
-
-	for scanner.Scan() {
-
-		line := strings.TrimSpace(scanner.Text())
-
-		if line != "module" {
-			continue
-		}
-
-		if scanner.Scan() {
-			return strings.TrimSpace(scanner.Text())
-		}
-	}
-
-	return ""
 }
 
 // makeLowerCase convert val to lower case then join to string with delimiter
