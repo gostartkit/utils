@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -40,4 +41,19 @@ func HomeDir(path string) (string, error) {
 	}
 
 	return path, nil
+}
+
+// FileSize format file size
+func FileSize(size int64) string {
+
+	units := []string{"B", "K", "M", "G", "T"}
+	var i int
+	var sf float64 = float64(size)
+
+	for sf >= 1024 && i < len(units)-1 {
+		sf /= 1024
+		i++
+	}
+
+	return fmt.Sprintf("%.1f%s", sf, units[i])
 }
