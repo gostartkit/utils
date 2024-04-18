@@ -4,8 +4,9 @@ import (
 	"strings"
 )
 
-// CheckKeys check right
-func CheckKeys(userRight int64, val func(c string) int64, keys ...string) bool {
+// CheckKeys rbac check right by keys
+// @param val func(key string) get value by key
+func CheckKeys(userRight int64, val func(key string) int64, keys ...string) bool {
 
 	if len(keys) == 0 {
 		return true
@@ -14,7 +15,7 @@ func CheckKeys(userRight int64, val func(c string) int64, keys ...string) bool {
 	return checkKeys(userRight, val, keys...)
 }
 
-// CheckVal check right
+// CheckVal rbac check right by vals
 func CheckVals(userRight int64, vals ...int64) bool {
 
 	if len(vals) == 0 {
@@ -24,8 +25,8 @@ func CheckVals(userRight int64, vals ...int64) bool {
 	return checkVals(userRight, vals...)
 }
 
-// checkKeys check right by keys
-func checkKeys(userRight int64, val func(c string) int64, keys ...string) bool {
+// checkKeys rbac check right by keys
+func checkKeys(userRight int64, val func(key string) int64, keys ...string) bool {
 
 	for _, key := range keys {
 		if !checkKey(userRight, val, key) {
@@ -36,8 +37,8 @@ func checkKeys(userRight int64, val func(c string) int64, keys ...string) bool {
 	return true
 }
 
-// checkKey check right by key
-func checkKey(userRight int64, val func(c string) int64, key string) bool {
+// checkKey rbac check right by key
+func checkKey(userRight int64, val func(key string) int64, key string) bool {
 
 	orKeys := strings.Split(key, "|")
 
@@ -57,7 +58,7 @@ func checkKey(userRight int64, val func(c string) int64, key string) bool {
 	return false
 }
 
-// checkVals check right
+// checkVals rbac check right by vals
 func checkVals(userRight int64, vals ...int64) bool {
 
 	for _, val := range vals {
@@ -69,7 +70,7 @@ func checkVals(userRight int64, vals ...int64) bool {
 	return true
 }
 
-// checkVal check right
+// checkVal rbac check right by val
 func checkVal(userRight int64, val int64) bool {
 
 	if val > 0 {
