@@ -15,4 +15,6 @@ var (
 	ErrDecodingPemBlock = errors.New("decoding PEM block error")
 	// ErrConvertingEcPublicKey converting EC public key error
 	ErrConvertingEcPublicKey = errors.New("converting EC public key error")
+	// ErrVersionHeaderInvalid version header invalid
+	ErrVersionHeaderInvalid = errors.New("version header invalid")
 )
