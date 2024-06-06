@@ -41,10 +41,9 @@ func TarFile(src string) (string, error) {
 	}
 
 	header := &tar.Header{
-		Name:    fi.Name(),
-		Size:    fi.Size(),
-		Mode:    int64(fi.Mode()),
-		ModTime: fi.ModTime(),
+		Name: fi.Name(),
+		Size: fi.Size(),
+		Mode: int64(fi.Mode()),
 	}
 
 	if err := tw.WriteHeader(header); err != nil {
