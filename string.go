@@ -2,19 +2,29 @@ package utils
 
 import (
 	"crypto/rand"
-	"encoding/hex"
+	"math/big"
 )
 
 // RandomString random string
 func RandomString(len int) (string, error) {
+	const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	return RandomStringWithCharset(len, characters)
+}
 
-	b := make([]byte, len/2)
+// RandomStringWithCharset random string
+func RandomStringWithCharset(length int, characters string) (string, error) {
 
-	_, err := rand.Read(b)
+	max := big.NewInt(int64(len(characters)))
 
-	if err != nil {
-		return "", err
+	b := make([]byte, length)
+
+	for i := 0; i < length; i++ {
+		randomIndex, err := rand.Int(rand.Reader, max)
+		if err != nil {
+			return "", err
+		}
+		b[i] = characters[randomIndex.Int64()]
 	}
 
-	return hex.EncodeToString(b), nil
+	return string(b), nil
 }
