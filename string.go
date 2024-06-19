@@ -6,19 +6,19 @@ import (
 )
 
 // RandomString random string
-func RandomString(len int) (string, error) {
+func RandomString(l int) (string, error) {
 	const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	return RandomStringWithCharset(len, characters)
+	return RandomStringWithCharset(l, characters)
 }
 
 // RandomStringWithCharset random string
-func RandomStringWithCharset(length int, characters string) (string, error) {
+func RandomStringWithCharset(l int, characters string) (string, error) {
 
 	max := big.NewInt(int64(len(characters)))
 
-	b := make([]byte, length)
+	b := make([]byte, l)
 
-	for i := 0; i < length; i++ {
+	for i := 0; i < l; i++ {
 		randomIndex, err := rand.Int(rand.Reader, max)
 		if err != nil {
 			return "", err
