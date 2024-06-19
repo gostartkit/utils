@@ -7,8 +7,8 @@ var (
 	ErrEmailOrPasswordInvalid = errors.New("email or password invalid")
 	// ErrEmailNotVerified email not verified
 	ErrEmailNotVerified = errors.New("email not verified")
-	// ErrEmailAddressIsAlreadyInUse eemail address is already in use
-	ErrEmailAddressIsAlreadyInUse = errors.New("email address is already in use")
+	// ErrEmailInUsed eemail address is already in use
+	ErrEmailInUsed = errors.New("email address is already in use")
 	// ErrPhoneOrPasswordInvalid phone or password invalid
 	ErrPhoneOrPasswordInvalid = errors.New("phone or password invalid")
 	// ErrPhoneNotVerified phone not verified
@@ -21,4 +21,6 @@ var (
 	ErrConvertingEcPublicKey = errors.New("converting EC public key error")
 	// ErrVersionHeaderInvalid version header invalid
 	ErrVersionHeaderInvalid = errors.New("version header invalid")
+	// ErrLength invalid length
+	ErrLength = errors.New("invalid length")
 )
