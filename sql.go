@@ -2,24 +2,27 @@ package utils
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
+	"io"
 	"strings"
 )
 
 // SqlFilter create sql for filter and args
-func SqlFilter(filter string, str *strings.Builder, args *[]interface{}, prefix string, fn func(key string, val string) (string, interface{}, error)) error {
+func SqlFilter(filter string, w io.Writer, args *[]any, prefix string, fn func(key string, val string) (string, interface{}, error)) error {
 
 	vals := filterParse(filter)
 
 	l := len(vals)
 
 	if l == 0 {
-		return errors.New("filter invalid")
+		return ErrFilter
 	}
 
 	var prev string
 	var space bool
+	var valid bool = false
+
+	var spaceByte = []byte(" ")
 
 	for i := 0; i < l; i++ {
 
@@ -28,7 +31,7 @@ func SqlFilter(filter string, str *strings.Builder, args *[]interface{}, prefix 
 		switch val {
 		case "eq", "ne", "gt", "ge", "lt", "le":
 			if space {
-				str.WriteString(" ")
+				w.Write(spaceByte)
 			} else {
 				space = true
 			}
@@ -43,34 +46,48 @@ func SqlFilter(filter string, str *strings.Builder, args *[]interface{}, prefix 
 				return err
 			}
 
+			valid = true
+
 			*args = append(*args, v)
-			fmt.Fprintf(str, "%s`%s` %s ?", prefix, n, op)
+			fmt.Fprintf(w, "%s`%s` %s ?", prefix, n, op)
 		case "and", "or", "not":
 			if space {
-				str.WriteString(" ")
+				w.Write(spaceByte)
 			} else {
 				space = true
 			}
-			str.WriteString(strings.ToUpper(val))
+			w.Write([]byte(strings.ToUpper(val)))
 		case "(", ")":
-			str.WriteString(val)
+			w.Write([]byte(val))
 		default:
 			prev = val
 		}
+	}
+
+	if !valid {
+		return ErrFilter
 	}
 
 	return nil
 }
 
 // SqlOrderBy create sql for order by
-func SqlOrderBy(orderBy string, str *strings.Builder, prefix string, fn func(variableName string) (string, string, string, error)) error {
+func SqlOrderBy(orderBy string, w io.Writer, prefix string, fn func(variableName string) (string, string, string, error)) error {
+
 	vals := orderByParse(orderBy)
 
 	l := len(vals)
 
 	if l == 0 {
-		return errors.New("orderBy invalid")
+		return ErrOrderBy
 	}
+
+	var valid bool = false
+
+	var commaBytes = []byte(", ")
+	var ascBytes = []byte(" ASC")
+	var descBytes = []byte(" DESC")
+	var backtickBytes = []byte("`")
 
 	for i := 0; i < l; i++ {
 
@@ -78,11 +95,11 @@ func SqlOrderBy(orderBy string, str *strings.Builder, prefix string, fn func(var
 
 		switch val {
 		case ",":
-			str.WriteString(", ")
+			w.Write(commaBytes)
 		case "asc":
-			str.WriteString(" ASC")
+			w.Write(ascBytes)
 		case "desc":
-			str.WriteString(" DESC")
+			w.Write(descBytes)
 		default:
 			n, _, _, err := fn(val)
 
@@ -90,11 +107,17 @@ func SqlOrderBy(orderBy string, str *strings.Builder, prefix string, fn func(var
 				return err
 			}
 
-			str.WriteString(prefix)
-			str.WriteByte('`')
-			str.WriteString(n)
-			str.WriteByte('`')
+			valid = true
+
+			w.Write([]byte(prefix))
+			w.Write(backtickBytes)
+			w.Write([]byte(n))
+			w.Write(backtickBytes)
 		}
+	}
+
+	if !valid {
+		return ErrOrderBy
 	}
 
 	return nil

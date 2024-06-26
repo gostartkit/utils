@@ -23,4 +23,8 @@ var (
 	ErrVersionHeaderInvalid = errors.New("version header invalid")
 	// ErrLength invalid length
 	ErrLength = errors.New("invalid length")
+	// ErrFilter invalid filter
+	ErrFilter = errors.New("invalid filter")
+	// ErrOrderBy invalid orderby
+	ErrOrderBy = errors.New("invalid orderby")
 )
