@@ -27,4 +27,6 @@ var (
 	ErrFilter = errors.New("invalid filter")
 	// ErrOrderBy invalid orderby
 	ErrOrderBy = errors.New("invalid orderby")
+	// ErrAttributeName invalid attributeName
+	ErrAttributeName = errors.New("invalid attribute name")
 )
