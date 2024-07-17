@@ -9,8 +9,10 @@ var (
 	ErrEmailOrPasswordInvalid = errors.New("email or password invalid")
 	// ErrEmailNotVerified email not verified
 	ErrEmailNotVerified = errors.New("email not verified")
-	// ErrEmailInUsed eemail address is already in use
+	// ErrEmailInUsed email address is already in use
 	ErrEmailInUsed = errors.New("email address is already in use")
+	// ErrEmailNotFound email not found
+	ErrEmailNotFound = errors.New("email not found")
 	// ErrPhoneOrPasswordInvalid phone or password invalid
 	ErrPhoneOrPasswordInvalid = errors.New("phone or password invalid")
 	// ErrPhoneNotVerified phone not verified
