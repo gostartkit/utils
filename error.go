@@ -3,8 +3,8 @@ package utils
 import "errors"
 
 var (
-	// ErrUserNotVerified user not verified
-	ErrUserNotVerified = errors.New("user not verified")
+	// ErrNotVerified object not verified
+	ErrNotVerified = errors.New("object not verified")
 	// ErrEmailOrPasswordInvalid email or password invalid
 	ErrEmailOrPasswordInvalid = errors.New("email or password invalid")
 	// ErrEmailNotVerified email not verified
