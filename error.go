@@ -13,6 +13,8 @@ var (
 	ErrEmailInUsed = errors.New("email address is already in use")
 	// ErrEmailNotFound email not found
 	ErrEmailNotFound = errors.New("email not found")
+	// ErrPhoneNotFound phone not found
+	ErrPhoneNotFound = errors.New("phone not found")
 	// ErrPhoneOrPasswordInvalid phone or password invalid
 	ErrPhoneOrPasswordInvalid = errors.New("phone or password invalid")
 	// ErrPhoneNotVerified phone not verified
