@@ -3,28 +3,28 @@ package utils
 import "errors"
 
 var (
-	// ErrEmailOrPasswordInvalid email or password invalid
-	ErrEmailOrPasswordInvalid = errors.New("email or password invalid")
+	// ErrNotVerified data not verified
+	ErrNotVerified = errors.New("data not verified")
 	// ErrEmailNotVerified email not verified
 	ErrEmailNotVerified = errors.New("email not verified")
 	// ErrEmailAddressUsed email address used
 	ErrEmailAddressUsed = errors.New("email address used")
-	// ErrPhoneOrPasswordInvalid phone or password invalid
-	ErrPhoneOrPasswordInvalid = errors.New("phone or password invalid")
 	// ErrPhoneNotVerified phone not verified
 	ErrPhoneNotVerified = errors.New("phone not verified")
 	// ErrPhoneNumberUsed phone number used
 	ErrPhoneNumberUsed = errors.New("phone number used")
-	// ErrDecodingPemBlock decoding PEM block error
-	ErrDecodingPemBlock = errors.New("decoding PEM block error")
-	// ErrConvertingEcPublicKey converting EC public key error
-	ErrConvertingEcPublicKey = errors.New("converting EC public key error")
+	// ErrInvalid data invalid
+	ErrInvalid = errors.New("data invalid")
 	// ErrVersionInvalid version invalid
-	ErrVersionInvalid = errors.New("invalid version")
+	ErrVersionInvalid = errors.New("version invalid")
 	// ErrLengthInvalid invalid length
-	ErrLengthInvalid = errors.New("invalid length")
+	ErrLengthInvalid = errors.New("length invalid")
 	// ErrFilterInvalid invalid filter
-	ErrFilterInvalid = errors.New("invalid filter")
+	ErrFilterInvalid = errors.New("filter invalid")
 	// ErrOrderByInvalid invalid orderby
-	ErrOrderByInvalid = errors.New("invalid orderby")
+	ErrOrderByInvalid = errors.New("orderby invalid")
+	// ErrEcPublicKeyInvalid ec public key invalid
+	ErrEcPublicKeyInvalid = errors.New("ec public key invalid")
+	// ErrPemBlockInvalid pem block invalid
+	ErrPemBlockInvalid = errors.New("pem block invalid")
 )

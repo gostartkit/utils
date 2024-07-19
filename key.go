@@ -58,7 +58,7 @@ func CreatePrivateKey(privateKeyPEM []byte) (*ecdsa.PrivateKey, error) {
 	block, _ := pem.Decode(privateKeyPEM)
 
 	if block == nil || block.Type != "EC PRIVATE KEY" {
-		return nil, ErrDecodingPemBlock
+		return nil, ErrPemBlockInvalid
 	}
 
 	privateKey, err := x509.ParseECPrivateKey(block.Bytes)
@@ -76,7 +76,7 @@ func CreatePublicKey(publicKeyPEM []byte) (*ecdsa.PublicKey, error) {
 	block, _ := pem.Decode(publicKeyPEM)
 
 	if block == nil || block.Type != "EC PUBLIC KEY" {
-		return nil, ErrDecodingPemBlock
+		return nil, ErrPemBlockInvalid
 	}
 
 	publicKey, err := x509.ParsePKIXPublicKey(block.Bytes)
@@ -88,7 +88,7 @@ func CreatePublicKey(publicKeyPEM []byte) (*ecdsa.PublicKey, error) {
 	ecdsaPublicKey, ok := publicKey.(*ecdsa.PublicKey)
 
 	if !ok {
-		return nil, ErrConvertingEcPublicKey
+		return nil, ErrEcPublicKeyInvalid
 	}
 
 	return ecdsaPublicKey, nil
