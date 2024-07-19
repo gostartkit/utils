@@ -15,7 +15,7 @@ func SqlFilter(filter string, w io.Writer, args *[]any, prefix string, fn func(k
 	l := len(vals)
 
 	if l == 0 {
-		return ErrFilter
+		return ErrFilterInvalid
 	}
 
 	var prev string
@@ -65,7 +65,7 @@ func SqlFilter(filter string, w io.Writer, args *[]any, prefix string, fn func(k
 	}
 
 	if !valid {
-		return ErrFilter
+		return ErrFilterInvalid
 	}
 
 	return nil
@@ -79,7 +79,7 @@ func SqlOrderBy(orderBy string, w io.Writer, prefix string, fn func(variableName
 	l := len(vals)
 
 	if l == 0 {
-		return ErrOrderBy
+		return ErrOrderByInvalid
 	}
 
 	var valid bool = false
@@ -117,7 +117,7 @@ func SqlOrderBy(orderBy string, w io.Writer, prefix string, fn func(variableName
 	}
 
 	if !valid {
-		return ErrOrderBy
+		return ErrOrderByInvalid
 	}
 
 	return nil

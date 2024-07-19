@@ -15,13 +15,13 @@ func RandomString(l int) (string, error) {
 func RandomStringWithCharset(l int, characters string) (string, error) {
 
 	if l <= 0 {
-		return "", ErrLength
+		return "", ErrLengthInvalid
 	}
 
 	max := len(characters)
 
 	if max == 0 {
-		return "", ErrLength
+		return "", ErrLengthInvalid
 	}
 
 	b := make([]byte, l)

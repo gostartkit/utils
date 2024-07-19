@@ -23,14 +23,12 @@ var (
 	ErrDecodingPemBlock = errors.New("decoding PEM block error")
 	// ErrConvertingEcPublicKey converting EC public key error
 	ErrConvertingEcPublicKey = errors.New("converting EC public key error")
-	// ErrVersionHeaderInvalid version header invalid
-	ErrVersionHeaderInvalid = errors.New("version header invalid")
-	// ErrLength invalid length
-	ErrLength = errors.New("invalid length")
-	// ErrFilter invalid filter
-	ErrFilter = errors.New("invalid filter")
-	// ErrOrderBy invalid orderby
-	ErrOrderBy = errors.New("invalid orderby")
-	// ErrAttributeName invalid attributeName
-	ErrAttributeName = errors.New("invalid attribute name")
+	// ErrVersionInvalid version invalid
+	ErrVersionInvalid = errors.New("invalid version")
+	// ErrLengthInvalid invalid length
+	ErrLengthInvalid = errors.New("invalid length")
+	// ErrFilterInvalid invalid filter
+	ErrFilterInvalid = errors.New("invalid filter")
+	// ErrOrderByInvalid invalid orderby
+	ErrOrderByInvalid = errors.New("invalid orderby")
 )
