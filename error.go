@@ -27,4 +27,6 @@ var (
 	ErrEcPublicKeyInvalid = errors.New("ec public key invalid")
 	// ErrPemBlockInvalid pem block invalid
 	ErrPemBlockInvalid = errors.New("pem block invalid")
+	// ErrCredentialsInvalid login failed, please check your credentials
+	ErrCredentialsInvalid = errors.New("login failed, please check your credentials")
 )
