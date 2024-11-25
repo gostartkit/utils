@@ -43,7 +43,7 @@ func CreatePublicKeyPEM(privateKey *ecdsa.PrivateKey) ([]byte, error) {
 	}
 
 	publicKeyPEMBlock := &pem.Block{
-		Type:  "EC PUBLIC KEY",
+		Type:  "PUBLIC KEY",
 		Bytes: publicKeyBytes,
 	}
 
