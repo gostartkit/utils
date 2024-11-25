@@ -75,7 +75,7 @@ func CreatePublicKey(publicKeyPEM []byte) (*ecdsa.PublicKey, error) {
 
 	block, _ := pem.Decode(publicKeyPEM)
 
-	if block == nil || block.Type != "EC PUBLIC KEY" {
+	if block == nil || block.Type != "PUBLIC KEY" {
 		return nil, ErrPemBlockInvalid
 	}
 
