@@ -9,50 +9,50 @@ import (
 	"unicode"
 )
 
-var lexerPool = sync.Pool{
+var jsonLexerPool = sync.Pool{
 	New: func() any {
-		return &Lexer{}
+		return &JSONLexer{}
 	},
 }
 
-func CreateLexer(data []byte) *Lexer {
-	lexer := lexerPool.Get().(*Lexer)
+func CreateJSONLexer(data []byte) *JSONLexer {
+	lexer := jsonLexerPool.Get().(*JSONLexer)
 	lexer.data = data
 	lexer.pos = 0
 	return lexer
 }
 
-func ReleaseLexer(lexer *Lexer) {
+func ReleaseJSONLexer(lexer *JSONLexer) {
 	lexer.data = nil
 	lexer.pos = 0
-	lexerPool.Put(lexer)
+	jsonLexerPool.Put(lexer)
 }
 
-type Lexer struct {
+type JSONLexer struct {
 	data []byte
 	pos  int
 }
 
-func (l *Lexer) Peek() byte {
+func (l *JSONLexer) Peek() byte {
 	if l.pos >= len(l.data) {
 		return 0
 	}
 	return l.data[l.pos]
 }
 
-func (l *Lexer) Advance() {
+func (l *JSONLexer) Advance() {
 	if l.pos < len(l.data) {
 		l.pos++
 	}
 }
 
-func (l *Lexer) SkipWhitespace() {
+func (l *JSONLexer) SkipWhitespace() {
 	for l.pos < len(l.data) && (l.data[l.pos] == ' ' || l.data[l.pos] == '\n' || l.data[l.pos] == '\t' || l.data[l.pos] == '\r') {
 		l.pos++
 	}
 }
 
-func (l *Lexer) Expect(c byte) error {
+func (l *JSONLexer) Expect(c byte) error {
 	l.SkipWhitespace()
 	if l.Peek() != c {
 		return fmt.Errorf("expected '%c', got '%c'", c, l.Peek())
@@ -61,7 +61,7 @@ func (l *Lexer) Expect(c byte) error {
 	return nil
 }
 
-func (l *Lexer) ReadString() (string, error) {
+func (l *JSONLexer) ReadString() (string, error) {
 	if err := l.Expect('"'); err != nil {
 		return "", err
 	}
@@ -85,7 +85,7 @@ func (l *Lexer) ReadString() (string, error) {
 	return result, nil
 }
 
-func (l *Lexer) ReadInt() (int, error) {
+func (l *JSONLexer) ReadInt() (int, error) {
 	start := l.pos
 	for l.pos < len(l.data) && (l.data[l.pos] >= '0' && l.data[l.pos] <= '9') {
 		l.pos++
@@ -94,7 +94,7 @@ func (l *Lexer) ReadInt() (int, error) {
 	return val, err
 }
 
-func (l *Lexer) ReadBool() (bool, error) {
+func (l *JSONLexer) ReadBool() (bool, error) {
 	if strings.HasPrefix(string(l.data[l.pos:]), "true") {
 		l.pos += 4
 		return true, nil
@@ -106,7 +106,7 @@ func (l *Lexer) ReadBool() (bool, error) {
 	return false, errors.New("invalid boolean value")
 }
 
-func (l *Lexer) ReadFloatArray() ([]float64, error) {
+func (l *JSONLexer) ReadFloatArray() ([]float64, error) {
 	if err := l.Expect('['); err != nil {
 		return nil, err
 	}
@@ -140,7 +140,7 @@ func (l *Lexer) ReadFloatArray() ([]float64, error) {
 	return result, nil
 }
 
-func (l *Lexer) SkipValue() error {
+func (l *JSONLexer) SkipValue() error {
 	l.SkipWhitespace()
 	switch l.Peek() {
 	case '{':
