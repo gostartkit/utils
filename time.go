@@ -1,6 +1,8 @@
 package utils
 
-import "time"
+import (
+	"time"
+)
 
 // Now return *time.Time
 func Now() *time.Time {

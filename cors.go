@@ -14,6 +14,8 @@ func Cors(set func(key string, value string), origin string, allow []string) {
 
 	set("Access-Control-Allow-Origin", origin)
 
+	set("Access-Control-Allow-Credentials", "true")
+
 	if len(allow) > 0 {
 		set("Access-Control-Allow-Methods", strings.Join(allow, ", "))
 	}
