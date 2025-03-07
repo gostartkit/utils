@@ -8,13 +8,13 @@ import (
 )
 
 const (
-	quoteChar    = '"'
-	commaChar    = ','
-	colonChar    = ':'
-	bracketLeft  = '['
-	bracketRight = ']'
-	braceLeft    = '{'
-	braceRight   = '}'
+	_QuoteChar    = '"'
+	_CommaChar    = ','
+	_ColonChar    = ':'
+	_BracketLeft  = '['
+	_BracketRight = ']'
+	_BraceLeft    = '{'
+	_BraceRight   = '}'
 )
 
 var jsonLexerPool = sync.Pool{
@@ -114,7 +114,7 @@ func (l *JSONLexer) Expect(c byte) error {
 // The string may contain escaped characters
 func (l *JSONLexer) ReadString() (string, error) {
 
-	if err := l.Expect(quoteChar); err != nil {
+	if err := l.Expect(_QuoteChar); err != nil {
 		return "", err
 	}
 
@@ -125,7 +125,7 @@ func (l *JSONLexer) ReadString() (string, error) {
 
 		ch := l.data[l.pos]
 
-		if ch == quoteChar {
+		if ch == _QuoteChar {
 			l.Advance()
 			return sb.String(), nil
 		}
@@ -137,8 +137,8 @@ func (l *JSONLexer) ReadString() (string, error) {
 			}
 
 			switch l.data[l.pos] {
-			case quoteChar:
-				sb.WriteByte(quoteChar)
+			case _QuoteChar:
+				sb.WriteByte(_QuoteChar)
 			case '\\':
 				sb.WriteByte('\\')
 			case '/':
@@ -291,7 +291,7 @@ func (l *JSONLexer) ReadBool() (bool, error) {
 // If the next 4 bytes are not "null", an error is returned
 func (l *JSONLexer) ReadNull() error {
 	l.SkipWhitespace()
-	if l.pos+4 <= l.len && string(l.data[l.pos:l.pos+4]) == "null" {
+	if l.pos+4 <= l.len && l.data[l.pos] == 'n' && l.data[l.pos+1] == 'u' && l.data[l.pos+2] == 'l' && l.data[l.pos+3] == 'l' {
 		l.pos += 4
 		l.column += 4
 		return nil
@@ -301,14 +301,14 @@ func (l *JSONLexer) ReadNull() error {
 
 // ReadArrayString reads a JSON array of strings
 func (l *JSONLexer) ReadArrayString() ([]string, error) {
-	if err := l.Expect(bracketLeft); err != nil {
+	if err := l.Expect(_BracketLeft); err != nil {
 		return nil, err
 	}
 
 	result := make([]string, 0)
 
 	l.SkipWhitespace()
-	if l.Peek() == bracketRight {
+	if l.Peek() == _BracketRight {
 		l.Advance()
 		return result, nil
 	}
@@ -321,11 +321,11 @@ func (l *JSONLexer) ReadArrayString() ([]string, error) {
 		result = append(result, val)
 
 		l.SkipWhitespace()
-		if l.Peek() == bracketRight {
+		if l.Peek() == _BracketRight {
 			l.Advance()
 			break
 		}
-		if err := l.Expect(commaChar); err != nil {
+		if err := l.Expect(_CommaChar); err != nil {
 			return nil, err
 		}
 	}
@@ -334,14 +334,14 @@ func (l *JSONLexer) ReadArrayString() ([]string, error) {
 
 // ReadArrayFloat64 reads a JSON array of floating point numbers
 func (l *JSONLexer) ReadArrayFloat64() ([]float64, error) {
-	if err := l.Expect(bracketLeft); err != nil {
+	if err := l.Expect(_BracketLeft); err != nil {
 		return nil, err
 	}
 
 	result := make([]float64, 0)
 
 	l.SkipWhitespace()
-	if l.Peek() == bracketRight {
+	if l.Peek() == _BracketRight {
 		l.Advance()
 		return result, nil
 	}
@@ -354,11 +354,11 @@ func (l *JSONLexer) ReadArrayFloat64() ([]float64, error) {
 		result = append(result, val)
 
 		l.SkipWhitespace()
-		if l.Peek() == bracketRight {
+		if l.Peek() == _BracketRight {
 			l.Advance()
 			break
 		}
-		if err := l.Expect(commaChar); err != nil {
+		if err := l.Expect(_CommaChar); err != nil {
 			return nil, err
 		}
 	}
@@ -371,9 +371,9 @@ func (l *JSONLexer) ReadArrayFloat64() ([]float64, error) {
 func (l *JSONLexer) SkipValue() error {
 	l.SkipWhitespace()
 	switch l.Peek() {
-	case braceLeft:
+	case _BraceLeft:
 		l.Advance()
-		if l.Peek() == braceRight {
+		if l.Peek() == _BraceRight {
 			l.Advance()
 			return nil
 		}
@@ -381,24 +381,24 @@ func (l *JSONLexer) SkipValue() error {
 			if _, err := l.ReadString(); err != nil {
 				return err
 			}
-			if err := l.Expect(colonChar); err != nil {
+			if err := l.Expect(_ColonChar); err != nil {
 				return err
 			}
 			if err := l.SkipValue(); err != nil {
 				return err
 			}
 			l.SkipWhitespace()
-			if l.Peek() == braceRight {
+			if l.Peek() == _BraceRight {
 				l.Advance()
 				break
 			}
-			if err := l.Expect(commaChar); err != nil {
+			if err := l.Expect(_CommaChar); err != nil {
 				return err
 			}
 		}
-	case bracketLeft:
+	case _BracketLeft:
 		l.Advance()
-		if l.Peek() == bracketRight {
+		if l.Peek() == _BracketRight {
 			l.Advance()
 			return nil
 		}
@@ -407,15 +407,15 @@ func (l *JSONLexer) SkipValue() error {
 				return err
 			}
 			l.SkipWhitespace()
-			if l.Peek() == bracketRight {
+			if l.Peek() == _BracketRight {
 				l.Advance()
 				break
 			}
-			if err := l.Expect(commaChar); err != nil {
+			if err := l.Expect(_CommaChar); err != nil {
 				return err
 			}
 		}
-	case quoteChar:
+	case _QuoteChar:
 		_, err := l.ReadString()
 		return err
 	case 't', 'f':

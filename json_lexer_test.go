@@ -70,10 +70,10 @@ func TestSkipWhitespace(t *testing.T) {
 // TestExpect tests the Expect method
 func TestExpect(t *testing.T) {
 	lexer := CreateJSONLexer([]byte(`  ,`))
-	if err := lexer.Expect(commaChar); err != nil {
+	if err := lexer.Expect(_CommaChar); err != nil {
 		t.Errorf("Expect comma failed: %v", err)
 	}
-	if err := lexer.Expect(quoteChar); err == nil {
+	if err := lexer.Expect(_QuoteChar); err == nil {
 		t.Errorf("Expect quote should have failed")
 	}
 	defer ReleaseJSONLexer(lexer)
