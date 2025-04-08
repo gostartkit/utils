@@ -6,7 +6,7 @@ import (
 
 // CheckCors check cors
 func CheckCors(origin string, domain string) bool {
-	return strings.HasSuffix(origin, domain) || strings.HasSuffix(origin, "127.0.0.1:3000")
+	return strings.HasSuffix(origin, domain) || strings.HasSuffix(origin, "127.0.0.1:3000") || strings.HasSuffix(origin, "localhost:3000")
 }
 
 // Cors sets the Cors (Cross-Origin Resource Sharing) related HTTP header information
