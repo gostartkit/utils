@@ -8,7 +8,6 @@ import (
 
 type Snowflake struct {
 	epoch        int64
-	nodeID       int64
 	sequence     int64
 	lastTime     int64
 	nodeIDBits   uint
@@ -17,7 +16,7 @@ type Snowflake struct {
 	maxSequence  int64
 }
 
-func NewSnowflake(nodeID int64, epoch time.Time) (*Snowflake, error) {
+func NewSnowflake(epoch time.Time) *Snowflake {
 	const (
 		defaultNodeIDBits   = 10
 		defaultSequenceBits = 12
@@ -32,15 +31,15 @@ func NewSnowflake(nodeID int64, epoch time.Time) (*Snowflake, error) {
 	sf.maxNodeID = -1 ^ (-1 << sf.nodeIDBits)
 	sf.maxSequence = -1 ^ (-1 << sf.sequenceBits)
 
-	if nodeID < 0 || nodeID > sf.maxNodeID {
-		return nil, fmt.Errorf("nodeID must be between 0 and %d", sf.maxNodeID)
-	}
-	sf.nodeID = nodeID
-
-	return sf, nil
+	return sf
 }
 
-func (sf *Snowflake) Generate() (int64, error) {
+func (sf *Snowflake) Generate(nodeID int64) (int64, error) {
+
+	if nodeID < 0 || nodeID > sf.maxNodeID {
+		return 0, fmt.Errorf("nodeID must be between 0 and %d", sf.maxNodeID)
+	}
+
 	for {
 		currentTime := time.Now().UnixMilli()
 		lastTime := atomic.LoadInt64(&sf.lastTime)
@@ -65,7 +64,7 @@ func (sf *Snowflake) Generate() (int64, error) {
 		}
 
 		id := ((currentTime - sf.epoch) << (sf.nodeIDBits + sf.sequenceBits)) |
-			(sf.nodeID << sf.sequenceBits) |
+			(nodeID << sf.sequenceBits) |
 			newSequence
 
 		return id, nil
