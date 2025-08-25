@@ -7,7 +7,7 @@ import (
 )
 
 // ReadJSON read json to data
-func ReadJSON(filename string, v interface{}) error {
+func ReadJSON(filename string, v any) error {
 
 	f, err := os.Open(filename)
 
@@ -21,7 +21,7 @@ func ReadJSON(filename string, v interface{}) error {
 }
 
 // WriteJSON write data to json
-func WriteJSON(filename string, v interface{}, overwrite bool) error {
+func WriteJSON(filename string, v any, overwrite bool) error {
 
 	if !overwrite && FileExist(filename) {
 		return os.ErrExist
