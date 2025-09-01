@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func TryParse(val string, attributeType string) (interface{}, error) {
+func TryParse(val string, attributeType string) (any, error) {
 	switch attributeType {
 	case "string":
 		return val, nil

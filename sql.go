@@ -72,7 +72,7 @@ func SqlFilter(filter string, w io.Writer, args *[]any, prefix string, fn func(k
 }
 
 // SqlOrderBy create sql for order by
-func SqlOrderBy(orderBy string, w io.Writer, prefix string, fn func(variableName string) (string, string, string, error)) error {
+func SqlOrderBy(orderBy string, w io.Writer, prefix string, fn func(variableName string) (string, error)) error {
 
 	vals := orderByParse(orderBy)
 
@@ -101,7 +101,7 @@ func SqlOrderBy(orderBy string, w io.Writer, prefix string, fn func(variableName
 		case "desc":
 			w.Write(descBytes)
 		default:
-			n, _, _, err := fn(val)
+			n, err := fn(val)
 
 			if err != nil {
 				return err
