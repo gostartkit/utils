@@ -8,7 +8,7 @@ import (
 )
 
 // SqlFilter create sql for filter and args
-func SqlFilter(filter string, w io.Writer, args *[]any, prefix string, fn func(key string, val string) (string, interface{}, error)) error {
+func SqlFilter(filter string, w io.Writer, args *[]any, prefix string, fn func(key string, val string) (string, any, error)) error {
 
 	vals := filterParse(filter)
 
