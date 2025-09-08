@@ -59,7 +59,7 @@ func (sf *Snowflake) Generate(nodeID int64) (int64, error) {
 				atomic.CompareAndSwapInt64(&sf.lastTime, lastTime, currentTime) {
 				newSequence = 0
 			} else {
-				runtime.Gosched()
+				time.Sleep(time.Millisecond)
 				continue
 			}
 		}
